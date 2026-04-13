@@ -14,7 +14,6 @@ Your goal is to:
 Replace this paragraph with your own summary of what your version does.
 
 ---
-
 ## How The System Works
 
 Explain your design in plain language.
@@ -28,6 +27,47 @@ Some prompts to answer:
 - How do you choose which songs to recommend
 
 You can include a simple diagram or bullet list if helpful.
+
+**Plan:**
+1. Read the user's preferences and load every song from `data/songs.csv`.
+2. Compare each song's features against the user's taste profile.
+3. Compute a weighted score for every song using the scoring rule.
+4. Sort the songs from best match to worst match.
+5. Return the top `k` songs as the final recommendations.
+
+flowchart LR
+    A[Input: User Prefs] --> B[Process: Loop through each song in the CSV]
+    B --> C[Score each song using the scoring logic]
+    C --> D[Rank songs by score]
+    D --> E[Output: Top K Recommendations]
+
+
+Mood match = 40
+Genre match = 30
+Energy closeness = 30
+
+Two user profiles:
+
+Pop, happy, high energy
+A song like Sunrise City scores highest because it matches all three.
+A song with only pop but wrong mood will rank lower.
+Lofi, chill, lower energy
+Midnight Coding and Library Rain rank highest because they match genre, mood, and energy well.
+A song with the right mood but different genre can still rank above a genre-only match.
+Bias to watch for:
+This can over-favor whichever mood and energy range appears most often in the catalog, and it can make genre matching too strict if songs are close in style but not exact label matches.
+
+**Song Features:**
+- Genre, mood, energy, danceability, valence, acousticness
+
+**UserProfile Information:**
+- favorite_genre, favorite_mood, target_energy, likes_acoustic
+
+**Score Computation:**
+- Weighted sum: 35% genre match + 25% mood match + 25% energy distance + 15% danceability
+
+**Song Selection:**
+- Score all songs, sort by score, return top-k (k=5)
 
 ---
 
